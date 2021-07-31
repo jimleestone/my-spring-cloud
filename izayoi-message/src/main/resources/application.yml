@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://129.204.116.98:3306/my_cloud?useSSL=false&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: prisma
+  rabbitmq:
+    host: 129.204.116.98
+    port: 5672
+    username: guest
+    password: guest
+  redis:
+    database: 0
+    host: 129.204.116.98
+    port: 6379
+    password: prisma
+logging:
+  level:
+    root: info
+mybatis-plus:
+  mapper-locations: classpath:com/izayoi/cloud/message/mapper/xml/*.xml
