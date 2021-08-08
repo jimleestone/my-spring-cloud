@@ -1,0 +1,23 @@
+server:
+  port: 9091
+  servlet:
+    context-path: /account-service
+spring:
+  application:
+    name: account-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/izayoi_account?useSSL=false&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123233
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+logging:
+  level:
+    root: info
+mybatis-plus:
+  mapper-locations: classpath:com/izayoi/common/mapper/xml/*.xml
