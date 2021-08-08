@@ -125,7 +125,7 @@ public class PaymentService {
 
 	private InventoryDTO buildInventoryDTO(OrderEntity order) {
 		InventoryDTO inventoryDTO = new InventoryDTO();
-		inventoryDTO.setCount(order.getCount());
+		inventoryDTO.setCount(order.getTotalCount());
 		inventoryDTO.setProductId(order.getProductId());
 		return inventoryDTO;
 	}
@@ -135,7 +135,7 @@ public class PaymentService {
 		nestedDTO.setAmount(order.getTotalAmount());
 		nestedDTO.setUserId(order.getUserId());
 		nestedDTO.setProductId(order.getProductId());
-		nestedDTO.setCount(order.getCount());
+		nestedDTO.setCount(order.getTotalCount());
 		return nestedDTO;
 	}
 }

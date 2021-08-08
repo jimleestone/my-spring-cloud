@@ -21,3 +21,5 @@ logging:
     root: info
 mybatis-plus:
   mapper-locations: classpath:com/izayoi/common/mapper/xml/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

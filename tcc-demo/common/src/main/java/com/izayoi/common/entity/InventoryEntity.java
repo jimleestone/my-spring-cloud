@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("inventory")
+@TableName("t_inventory")
 public class InventoryEntity {
 
 	@TableId(type = IdType.AUTO)

@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("order")
+@TableName("t_order")
 public class OrderEntity {
 
 	@TableId(type = IdType.AUTO)
@@ -19,7 +19,7 @@ public class OrderEntity {
 	private Integer status;
 	private String productId;
 	private BigDecimal totalAmount;
-	private Integer count;
+	private Integer totalCount;
 	private String userId;
 	private LocalDateTime createTime;
 }

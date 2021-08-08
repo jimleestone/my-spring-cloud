@@ -94,9 +94,10 @@ public class OrderService {
 		order.setProductId("1");
 		order.setStatus(OrderStatus.NOT_PAY.getCode());
 		order.setTotalAmount(amount);
-		order.setCount(count);
+		order.setTotalCount(count);
 		// demo中 表里面存的用户id为10000
 		order.setUserId("10000");
+
 		return order;
 	}
 }

@@ -113,7 +113,7 @@ public class AccountService {
 						.ge(AccountEntity::getBalance, accountDTO.getAmount())
 						.set(AccountEntity::getUpdateTime, LocalDateTime.now())
 						.setSql("balance = balance - " + accountDTO.getAmount())
-						.setSql("freeze_amount= freeze_amount + " + accountDTO.getAmount()));
+						.setSql("freeze_amount = freeze_amount + " + accountDTO.getAmount()));
 	}
 
 	public int doConfirm(AccountDTO accountDTO) {
@@ -121,7 +121,7 @@ public class AccountService {
 				new LambdaUpdateWrapper<AccountEntity>().eq(AccountEntity::getUserId, accountDTO.getUserId())
 						.ge(AccountEntity::getFreezeAmount, accountDTO.getAmount())
 						.set(AccountEntity::getUpdateTime, LocalDateTime.now())
-						.setSql("freeze_amount= freeze_amount - " + accountDTO.getAmount()));
+						.setSql("freeze_amount = freeze_amount - " + accountDTO.getAmount()));
 	}
 
 	public int doCancel(AccountDTO accountDTO) {
@@ -130,7 +130,7 @@ public class AccountService {
 						.ge(AccountEntity::getFreezeAmount, accountDTO.getAmount())
 						.set(AccountEntity::getUpdateTime, LocalDateTime.now())
 						.setSql("balance = balance + " + accountDTO.getAmount())
-						.setSql("freeze_amount= freeze_amount - " + accountDTO.getAmount()));
+						.setSql("freeze_amount = freeze_amount - " + accountDTO.getAmount()));
 	}
 
 	public int testUpdate(AccountDTO accountDTO) {
