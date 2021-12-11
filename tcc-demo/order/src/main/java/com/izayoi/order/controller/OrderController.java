@@ -1,22 +1,73 @@
 package com.izayoi.order.controller;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 
+import org.springframework.messaging.rsocket.RSocketRequester;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.izayoi.common.dto.Message;
+import com.izayoi.common.dto.RequestData;
+import com.izayoi.common.dto.ResponseData;
 import com.izayoi.order.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/order")
 public class OrderController {
 
+	private static Disposable disposable;
+
 	private final OrderService orderService;
+	private final RSocketRequester messageService;
+
+	@GetMapping("/mono")
+	Mono<ResponseData> getMono(@RequestParam String msg) {
+		return messageService.route("getMono").data(new RequestData(msg)).retrieveMono(ResponseData.class)
+				.doOnNext(m -> log.info("message {} found.", m));
+	}
+
+	@GetMapping("/flux")
+	Flux<ResponseData> getFlux(@RequestParam String msg) {
+		return messageService.route("getFlux").data(new RequestData(msg)).retrieveFlux(ResponseData.class)
+				.doOnNext(m -> log.info("message {} found.", m));
+	}
+
+	@GetMapping("/channel")
+	public void channel() {
+		log.info(
+				"\n\n***** Channel (bi-directional streams)\n***** Asking for a stream of messages.\n***** Type 's' to stop.\n\n");
+
+		Mono<Duration> setting1 = Mono.just(Duration.ofSeconds(1));
+		Mono<Duration> setting2 = Mono.just(Duration.ofSeconds(3)).delayElement(Duration.ofSeconds(5));
+		Mono<Duration> setting3 = Mono.just(Duration.ofSeconds(5)).delayElement(Duration.ofSeconds(15));
+
+		Flux<Duration> settings = Flux.concat(setting1, setting2, setting3)
+				.doOnNext(d -> log.info("\nSending setting for a {}-second interval.\n", d.getSeconds()));
+
+		disposable = messageService.route("channel").data(settings).retrieveFlux(Message.class)
+				.subscribe(message -> log.info("Received: {} \n(Type 's' to stop.)", message));
+
+	}
+
+	@GetMapping("/stop")
+	public void stop() {
+		log.info("Stopping the current stream.");
+		disposable.dispose();
+		log.info("Stream stopped.");
+
+	}
 
 	// 订单支付接口（注意这里模拟的是创建订单并进行支付扣减库存等操作）
 	@PostMapping(value = "/orderPay")
